@@ -1,0 +1,25 @@
+{
+    "id":"ioGate",
+	"name":"ioGate",
+	"author":"King",
+    "utility":"false",
+	"version":"0.0.1",
+	"description":"联机对战",
+    "gameVersion": "0.97a-RC11",
+  	"jars":[
+  	    "jars/ioGate.jar",
+    ],
+  	"modPlugin":"org.king.iogate.IoGateModPlugin",
+	  	"dependencies": [
+        {
+            "id": "lw_lazylib",
+            "name": "LazyLib",
+            "version": "2.8b"
+        },
+        {
+            "id": "lunalib",
+            "name": "LunaLib",
+             "version": "1.8.4"
+        }
+    ]
+}

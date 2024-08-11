@@ -1,0 +1,55 @@
+fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+attention,注意事项,Text,"请手动输入最新值，而不要使用 Ctrl+C / Ctrl+V， 否则会加载 saves/common/LunaSettings/ioGate.json.data 中的缓存。
+Please enter the latest values manually instead of using Ctrl+C / Ctrl+V, otherwise the cache in saves/common/LunaSettings/ioGate.json.data will be loaded.
+",,
+,,,,,
+userDataHeader,User Data Header,Header,"用户数据
+User Data",,,,,
+userId,"用户ID
+UserId",Int,0,,"用户的唯一身份标识
+Unique identification of the user",1,1024,
+variantId,"你的飞船装配方案ID
+VariantId",String,nebula_Standard,,"选择你的variantId
+variantId在.variant文件中，.variant文件所在目录：游戏根目录/starsector-core/data/variants
+只支持原版variantId，不支持自定义，不支持其他Mod的飞船
+若variantId为空字符串 / null / 不存在，默认为nebula_Standard
+Select your variantId
+The variantId is in the .variant file, the .variant file is in the directory: game root/starsector-core/data/variants
+Only the original variantId is supported, no customization, no other Mods for ships
+If variantId is empty / null / does not exist, it defaults to nebula_Standard.",,,
+supplementToVariantId,"飞船配装方案ID的补充
+Supplement To VariantId",String,,,"LunaLib的String输入框存在字符数量限制，有些variantId无法被完整地输入和读取
+当上方输入框的字符数已满时，请将variantId分割为两部分，并将它的后半部分填入此输入框
+LunaLib's String input box has a character limit, some variantId can't be entered and read completely
+When the upper input box is full, please split the variantId into two parts and put the second half of the variantId into this input box",
+,,,,,,,,
+NetworkSettingHeader,Network Setting Header,Header,"网络设置
+Network Setting",,,,,
+serverAddress,"ioHub服务器地址
+ioHub Server Address",String,127.0.0.1,,"客户端连接对外服的IPv4地址
+IPv4 address of the client connection to the external server",,,
+externalPort,"ioHub对外服端口
+ioHub external port
+",Int,50100,,"客户端连接对外服的端口
+The port of the client connection to the external server",50100,65535,
+,,,,,,,,
+triggerHeader,Trigger Header,Header,"触发器
+Trigger",,,,,
+triggerDescription,"触发器介绍
+Trigger Description",Text,"当点击保存设置时，将会执行所有值为true的触发器。
+When clicking Save Settings, all triggers with a value of true will be executed."
+launchNetworkClient,"启动网络客户端
+Launch Network Client",Boolean,false,,"客户端与服务器建立连接
+成功连接服务器后，无法使用该触发器来关闭连接，除非关闭游戏进程
+The client establishes a connection with the server
+After successfully connecting to the server, this trigger cannot be used to close the connection unless the game process is closed",,,
+login,"登录
+login",Boolean,false,,"使用userId登录服务器
+成功登录后，无法使用该触发器来注销，除非关闭游戏进程
+Logs in to the server using userId
+After successfully logging in, it is not possible to log out using this trigger, unless the game process is closed",,,
+autoMatch,"自动匹配
+Auto Match",Boolean,false,,"上传MatchInfo，等待其他用户匹配
+Upload MatchInfo and wait for other users to match it",,,
+,,,,,,,
+,,,,,
