@@ -17,8 +17,8 @@ public class MissionDefinition implements MissionDefinitionPlugin {
         api.setFleetTagline(FleetSide.PLAYER, "Player");
         api.setFleetTagline(FleetSide.ENEMY, "Enemy");
 
-        float width = 9000f;
-        float height = 9000f;
+        float width = 12000f;
+        float height = 12000f;
         api.initMap(-width / 2f, width / 2f, -height / 2f, height / 2f);
 
         // 在任务描述中“战术目标”下的项目符号列表中添加一行

@@ -48,7 +48,7 @@ public class InitializePlugin extends BaseEveryFrameCombatPlugin {
     }
 
     private void initializeRemoteShip() {
-        NetworkInfoManager.remoteShip = CombatUtils.spawnShipOrWingDirectly("medusa_CS", FleetMemberType.SHIP, FleetSide.ENEMY, 1f, new Vector2f(0f, 1000f), 270f);
+        NetworkInfoManager.remoteShip = CombatUtils.spawnShipOrWingDirectly("medusa_CS", FleetMemberType.SHIP, FleetSide.ENEMY, 1f, new Vector2f(0f, 3000f), 270f);
         NetworkInfoManager.remoteShip.setShipAI(PluginManager.EMPTY_SHIP_AI_PLUGIN);
 
 
@@ -68,7 +68,7 @@ public class InitializePlugin extends BaseEveryFrameCombatPlugin {
     }
 
     private void initializeLocalShip() {
-        NetworkInfoManager.localShip = CombatUtils.spawnShipOrWingDirectly("medusa_CS", FleetMemberType.SHIP, FleetSide.PLAYER, 1f, new Vector2f(0f, -1000f), 90f);
+        NetworkInfoManager.localShip = CombatUtils.spawnShipOrWingDirectly("medusa_CS", FleetMemberType.SHIP, FleetSide.PLAYER, 1f, new Vector2f(0f, -3000f), 90f);
         NetworkInfoManager.localShip.setShipAI(PluginManager.LOCAL_CONTROL_SHIP_AI_PLUGIN);
         NetworkInfoManager.localShip.setAlly(true);
 
