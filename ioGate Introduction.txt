@@ -47,6 +47,7 @@ ioGate（客户端）
 2、使用Miko_Rouge.bat启动游戏后，确保在Mod选项中启用ioGate和它所依赖的Mods
 3、在游戏主界面的左上角，使用LunaLib设置ioGate相关参数
 4、使用ioGate建立连接时，确保本地或远程的ioHub已经完全启动
+5、（可选）如果LunaSetting和任务描述中存在乱码，则需要下载并安装中文字库：https://www.fossic.org/thread-177-1-1.html
 
 
 
@@ -103,3 +104,4 @@ ioGate (Client)
 2. After launching the game using Miko_Rouge.bat, make sure to enable ioGate and the mods it depends on in the Mod Options.
 3. In the upper left corner of the main game interface, use LunaLib to set the ioGate parameters.
 4. Make sure the local or remote ioHub is fully started when you use ioGate to establish a connection.
+5、(Optional) If there is garbled code in LunaSetting and mission descriptions, you need to download and install the Chinese text library: https://www.fossic.org/thread-177-1-1.html

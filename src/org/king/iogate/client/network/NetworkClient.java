@@ -54,11 +54,20 @@ public class NetworkClient {
                         NetworkInfoManager.externalPort = externalPort;
                         // 添加所有监听
                         addListenCommands();
-                        log.info("成功连接服务器" +
+                        log.info("客户端成功连接服务器" +
                                         "{}" +
                                         "\t当前连接的服务器地址：{}" +
                                         "{}" +
                                         "\t当前连接的服务器端口：{}",
+                                System.lineSeparator(),
+                                NetworkInfoManager.serverAddress,
+                                System.lineSeparator(),
+                                NetworkInfoManager.externalPort);
+                        log.info("Client successfully connects to the server" +
+                                        "{}" +
+                                        "\tServer address for current connection: {}" +
+                                        "{}" +
+                                        "\tServer port for current connection: {}",
                                 System.lineSeparator(),
                                 NetworkInfoManager.serverAddress,
                                 System.lineSeparator(),

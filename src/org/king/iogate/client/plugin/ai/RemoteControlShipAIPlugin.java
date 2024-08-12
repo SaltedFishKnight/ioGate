@@ -3,7 +3,6 @@ package org.king.iogate.client.plugin.ai;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipCommand;
 import com.fs.starfarer.api.combat.ShipSystemAPI;
-import lombok.extern.slf4j.Slf4j;
 import org.king.iogate.client.listener.InputStateListener;
 import org.king.iogate.client.listener.LocalShipActionListener;
 import org.king.iogate.client.manager.FrameManager;
@@ -20,8 +19,6 @@ import org.lwjgl.util.vector.Vector2f;
 import java.util.List;
 import java.util.Objects;
 
-// TODO 删除日志
-@Slf4j
 public class RemoteControlShipAIPlugin extends AbstractShipAIPlugin {
 
     @Override
@@ -38,18 +35,23 @@ public class RemoteControlShipAIPlugin extends AbstractShipAIPlugin {
         actionWithId.shipAction = producerShipAction;
         RoomActionSet.uploadShipAction(actionWithId);
 
+        /*
+         * TODO
+         *  计数器记录使用缓存帧次数
+         *  后发玩家使用计数器，清除先手玩家的所有action
+         *  使用计数器跳过延迟帧和丢帧（假设缓存帧预测成功）
+         *  若缓存帧预测失败，没有任何纠错能力
+         *  使用 boolean 代替 CommandType，减少循环判断
+         */
         // 远程飞船行动逻辑
         ShipAction shipAction = FrameManager.FRAME_BUFFER.poll();
         if(shipAction == null) {
             repeatLastFrameShipAction(FrameManager.lastFrameShipAction);
-            log.info("使用缓存帧[{}]", FrameManager.lastFrameShipAction.frameIndex);
         } else {
             consumeLatestShipAction(shipAction);
             FrameManager.lastFrameShipAction = shipAction;
-            log.info("使用最新帧[{}]", shipAction.frameIndex);
         }
-        int curIndex = FrameManager.FRAME_COUNTER.getAndIncrement();
-        log.info("当前帧[{}]", curIndex);
+        FrameManager.FRAME_COUNTER.getAndIncrement();
     }
 
     private void repeatLastFrameShipAction(ShipAction shipAction) {

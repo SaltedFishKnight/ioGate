@@ -29,7 +29,8 @@ public class InitializePlugin extends BaseEveryFrameCombatPlugin {
         super.init(engine);
 
         if (NetworkState.matchState != MatchType.MATCHED) {
-            log.info("当前用户未成功匹配，需要匹配成功才能开始战斗");
+            log.info("用户未成功匹配，需要匹配成功才能开始战斗");
+            log.info("User is not successfully matched and need to be matched with an opponent to start the combat");
             engine.endCombat(0f, FleetSide.ENEMY);
             return;
         }

@@ -49,6 +49,7 @@ public final class RoomActionSet {
                     NetworkInfoManager.remoteShip.setShipAI(PluginManager.REMOTE_CONTROL_SHIP_AI_PLUGIN);
 
                     log.info("开始战斗");
+                    log.info("Start the combat");
                 })
                 .listen();
     }
@@ -74,6 +75,7 @@ public final class RoomActionSet {
                 .setCallback(result -> {
                     if (NetworkState.matchState != MatchType.MATCHING) {
                         log.info("当前监听状态为：{}，此次监听回调无效", NetworkState.matchState);
+                        log.info("The current listener state is: {}, this listener callback is invalidated", NetworkState.matchState);
                         return;
                     }
                     RemoteUserInfo remoteUserInfo = result.getValue(RemoteUserInfo.class);
@@ -97,6 +99,24 @@ public final class RoomActionSet {
                             NetworkInfoManager.remoteUserId,
                             System.lineSeparator(),
                             NetworkInfoManager.remoteVariantId);
+                    log.info("User has been successfully matched, please enter the mission and wait for the combat to begin" +
+                                    "{}" +
+                                    "\tlocal user ID：[{}]" +
+                                    "{}" +
+                                    "\tlocal user variantId：{}" +
+                                    "{}" +
+                                    "\tremote user ID：[{}]" +
+                                    "{}" +
+                                    "\tremote user variantId：{}",
+                            System.lineSeparator(),
+                            NetworkInfoManager.localUserId,
+                            System.lineSeparator(),
+                            NetworkInfoManager.localVariantId,
+                            System.lineSeparator(),
+                            NetworkInfoManager.remoteUserId,
+                            System.lineSeparator(),
+                            NetworkInfoManager.remoteVariantId
+                    );
                 })
                 .listen();
     }
@@ -104,10 +124,11 @@ public final class RoomActionSet {
     public static void listenUserException() {
         int userExceptionCmd = CmdKit.merge(RoomCmd.cmd, RoomCmd.userException);
         ListenCommand.of(userExceptionCmd)
-                .setTitle("用户发生异常")
+                .setTitle("监听用户发生异常")
                 .setCallback(result -> {
                     long userId = result.getLong();
-                    log.info("发生异常的用户ID：{}", userId);
+                    log.info("ID为[{}]的用户产生异常，将结束战斗，取消匹配", userId);
+                    log.info("The user with ID [{}] generates an exception that will end the combat and cancel the match", userId);
                     if (Global.getCurrentState() == GameState.COMBAT) {
                         Global.getCombatEngine().endCombat(0f, userId == NetworkInfoManager.localUserId ? FleetSide.ENEMY : FleetSide.PLAYER);
                     }

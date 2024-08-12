@@ -12,7 +12,7 @@ public class IoGateModPlugin extends BaseModPlugin {
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
         SettingsAPI settings = Global.getSettings();
-        // 开发者模式下的 Ctrl + LMB 会破坏同步
+        // TODO 不允许进入开发模式，因为 Ctrl + LMB 会破坏同步
         // settings.setDevMode(false);
 
         LunaSettings.addSettingsListener(ListenerManager.TRIGGER_LISTENER);

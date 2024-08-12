@@ -63,29 +63,37 @@ public class TriggerListener implements LunaSettingsListener {
     private void printState() {
 
         if (NetworkState.clientState == ClientType.NOT_CONNECTED) {
-            log.info("未连接服务器，需要连接服务器才能进行登录操作");
+            log.info("客户端未连接服务器，需要连接服务器才能进行登录操作");
+            log.info("Client is not connected to the server, you need to connect to the server to log in");
             return;
         } else if (NetworkState.clientState == ClientType.CONNECTING) {
-            log.info("正在连接服务器");
+            log.info("客户端正在连接服务器");
+            log.info("Client is connecting to the server now");
             return;
         } else if (NetworkState.clientState == ClientType.CONNECTED) {
-            log.info("已连接服务器");
+            log.info("客户端已和服务器建立连接");
+            log.info("Client has established a connection with the server");
         }
 
         if (NetworkState.loginState == LoginType.NOT_LOGGED_IN) {
             log.info("用户未登录，需要登录成功才能进行自动匹配操作");
+            log.info("User is not logged in and needs to be logged in successfully to perform the auto-matching operation");
             return;
         } else if (NetworkState.loginState == LoginType.LOGGING_IN) {
-            log.info("正在登录中");
+            log.info("用户正在登录中");
+            log.info("User is logging in now");
             return;
         } else if (NetworkState.loginState == LoginType.LOGGED_IN) {
-            log.info("用户已登录，本地用户ID：{}", NetworkInfoManager.localUserId);
+            log.info("用户已登录，本地用户ID：[{}]", NetworkInfoManager.localUserId);
+            log.info("User is logged in, local user ID: [{}]", NetworkInfoManager.localUserId);
         }
 
         if (NetworkState.matchState == MatchType.NOT_MATCHED) {
             log.info("用户未匹配，需要匹配成功才能开始战斗");
+            log.info("User is not matched and need to be matched successfully to start the combat");
         } else if (NetworkState.matchState == MatchType.MATCHING) {
             log.info("用户正在匹配中");
+            log.info("User is being matched now");
         } else if (NetworkState.matchState == MatchType.MATCHED) {
             log.info("用户已成功匹配，请进入任务，等待战斗开始" +
                             "{}" +
@@ -96,6 +104,24 @@ public class TriggerListener implements LunaSettingsListener {
                             "\t远程用户ID：{}" +
                             "{}" +
                             "\t远程用户飞船装配方案ID：{}",
+                    System.lineSeparator(),
+                    NetworkInfoManager.localUserId,
+                    System.lineSeparator(),
+                    NetworkInfoManager.localVariantId,
+                    System.lineSeparator(),
+                    NetworkInfoManager.remoteUserId,
+                    System.lineSeparator(),
+                    NetworkInfoManager.remoteVariantId
+            );
+            log.info("User has been successfully matched, please enter the mission and wait for the combat to begin" +
+                            "{}" +
+                            "\tlocal user ID：[{}]" +
+                            "{}" +
+                            "\tlocal user variantId：{}" +
+                            "{}" +
+                            "\tremote user ID：[{}]" +
+                            "{}" +
+                            "\tremote user variantId：{}",
                     System.lineSeparator(),
                     NetworkInfoManager.localUserId,
                     System.lineSeparator(),

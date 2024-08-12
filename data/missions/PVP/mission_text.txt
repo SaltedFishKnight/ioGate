@@ -1,0 +1,15 @@
+以下情况会导致失去同步：
+1、对战双方帧率不相同，建议setting.json使用默认设置："fps":60
+2、在开发者模式下，使用 Ctrl + LMB 获取飞船控制权
+3、使用带有以下系统的飞船
+（1）相位斗篷
+（2）时流之壳
+（3）终结者无人机
+
+The following situations will cause loss of synchronization:
+1. The frame rate of both sides of the battle is not the same, it is recommended that setting.json use the default setting: "fps":60
+2. Use Ctrl + LMB to get control of the ship in developer mode.
+3. Use a ship with the following systems
+(1) Phase Cloak
+(2) Temporal Shell
+(3) Termination Sequence

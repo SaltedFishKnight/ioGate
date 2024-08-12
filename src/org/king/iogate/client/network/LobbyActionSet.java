@@ -42,13 +42,16 @@ public final class LobbyActionSet {
                     if (loginResponse.existUser) {
                         NetworkState.loginState = LoginType.NOT_LOGGED_IN;
                         log.info("用户ID[{}]已被占用，请选择其他ID", selectedUserId);
+                        log.info("User ID [{}] is already taken, please select another ID", selectedUserId);
                     } else if (loginResponse.success) {
                         NetworkState.loginState = LoginType.LOGGED_IN;
                         NetworkInfoManager.localUserId = selectedUserId;
-                        log.info("用户ID[{}]登录成功", selectedUserId);
+                        log.info("用户使用ID[{}]登录成功", selectedUserId);
+                        log.info("User logged in successfully with ID [{}]", selectedUserId);
                     } else {
                         NetworkState.loginState = LoginType.NOT_LOGGED_IN;
-                        log.info("服务器产生未知错误，用户ID[{}]登录失败，请重新尝试", selectedUserId);
+                        log.info("登录失败，有多名用户竞争ID[{}]，请选择其他ID", selectedUserId);
+                        log.info("Login failed, there are multiple users competing for ID [{}], please select another ID", selectedUserId);
                     }
                 })
                 .execute();
@@ -56,7 +59,8 @@ public final class LobbyActionSet {
         TaskKit.runOnce(() -> {
             if (NetworkState.loginState == LoginType.LOGGING_IN) {
                 NetworkState.loginState = LoginType.NOT_LOGGED_IN;
-                log.info("用户登录请求超时");
+                log.info("用户的登录请求已经超时，请重新登录");
+                log.info("The user login request has timed out, please log in again");
             }
         }, IoGameClient.requestCommandTimeoutMilliseconds, TimeUnit.MILLISECONDS);
     }
@@ -76,9 +80,11 @@ public final class LobbyActionSet {
                     boolean isQueued = result.getBoolean();
                     if (isQueued) {
                         log.info("匹配成功，用户信息进入匹配队列");
+                        log.info("Successful match, user information enters the match queue");
                     } else {
                         NetworkState.matchState = MatchType.NOT_MATCHED;
                         log.info("匹配失败，请重新尝试");
+                        log.info("Match failed, please try again");
                     }
                 })
                 .execute();
