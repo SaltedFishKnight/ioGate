@@ -18,8 +18,6 @@ import org.king.iogate.common.protobuf.room.ActionWithId;
 import org.king.iogate.common.protobuf.room.ShipAction;
 import org.king.iogate.common.route.RoomCmd;
 
-import java.util.concurrent.CompletableFuture;
-
 @Slf4j
 public final class RoomActionSet {
 
@@ -52,20 +50,6 @@ public final class RoomActionSet {
                     log.info("Start the combat");
                 })
                 .listen();
-    }
-
-    public static ShipAction exchangeShipAction(ShipAction producerShipAction) {
-        CompletableFuture<ShipAction> shipActionCompletableFuture = new CompletableFuture<>();
-        int exchangeShipActionCmd = CmdKit.merge(RoomCmd.cmd, RoomCmd.exchangeShipAction);
-        RequestCommand.of(exchangeShipActionCmd)
-                .setTitle("交换一帧之内，飞船的所有行为")
-                .setRequestData(() -> producerShipAction)
-                .setCallback(result -> {
-                    ShipAction value = result.getValue(ShipAction.class);
-                    shipActionCompletableFuture.complete(value);
-                })
-                .execute();
-        return shipActionCompletableFuture.join();
     }
 
     public static void listenPushRemoteUserInfo() {
