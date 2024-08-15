@@ -1,5 +1,7 @@
 package org.king.iogate.client.plugin.combat;
 
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.SettingsAPI;
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipCommand;
@@ -20,39 +22,44 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.util.List;
 
-// TODO 删除日志
 @Slf4j
-public class InitializePlugin extends BaseEveryFrameCombatPlugin {
+public class InitPlugin extends BaseEveryFrameCombatPlugin {
 
     @Override
     public void init(CombatEngineAPI engine) {
         super.init(engine);
 
-        if (NetworkState.matchState != MatchType.MATCHED) {
-            log.info("用户未成功匹配，需要匹配成功才能开始战斗");
-            log.info("User is not successfully matched and need to be matched with an opponent to start the combat");
-            engine.endCombat(0f, FleetSide.ENEMY);
-            return;
-        }
+        initSystem(engine);
 
-        engine.setDoNotEndCombat(true);
+        initRemoteShip();
 
-        initializeRemoteShip();
+        initLocalShip();
 
-        initializeLocalShip();
-
-        initializePlugins(engine);
-
-        FrameManager.newCombat();
+        initPlugins(engine);
 
         RoomActionSet.ready();
     }
 
-    private void initializeRemoteShip() {
-        NetworkInfoManager.remoteShip = CombatUtils.spawnShipOrWingDirectly("medusa_CS", FleetMemberType.SHIP, FleetSide.ENEMY, 1f, new Vector2f(0f, 3000f), 270f);
+    private void initSystem(CombatEngineAPI engine) {
+        if (NetworkState.matchState != MatchType.MATCHED) {
+            log.info("用户未成功匹配，需要匹配成功才能开始战斗");
+            log.info("User is not successfully matched and need to be matched with an opponent to start the combat");
+            engine.endCombat(0f, FleetSide.ENEMY);
+        }
+
+        // 自定义结束对局的实现
+        engine.setDoNotEndCombat(true);
+
+        // 不允许进入开发模式
+        SettingsAPI settings = Global.getSettings();
+        settings.setDevMode(false);
+
+        FrameManager.newCombat();
+    }
+
+    private void initRemoteShip() {
+        NetworkInfoManager.remoteShip = CombatUtils.spawnShipOrWingDirectly(NetworkInfoManager.remoteVariantId, FleetMemberType.SHIP, FleetSide.ENEMY, 1f, new Vector2f(0f, 3000f), 270f);
         NetworkInfoManager.remoteShip.setShipAI(PluginManager.EMPTY_SHIP_AI_PLUGIN);
-
-
 
         List<WeaponGroupAPI> weaponGroupsCopy = NetworkInfoManager.remoteShip.getWeaponGroupsCopy();
         RemoteShipState.NumberOfGroups = weaponGroupsCopy.size();
@@ -68,12 +75,10 @@ public class InitializePlugin extends BaseEveryFrameCombatPlugin {
         }
     }
 
-    private void initializeLocalShip() {
-        NetworkInfoManager.localShip = CombatUtils.spawnShipOrWingDirectly("medusa_CS", FleetMemberType.SHIP, FleetSide.PLAYER, 1f, new Vector2f(0f, -3000f), 90f);
+    private void initLocalShip() {
+        NetworkInfoManager.localShip = CombatUtils.spawnShipOrWingDirectly(NetworkInfoManager.localVariantId, FleetMemberType.SHIP, FleetSide.PLAYER, 1f, new Vector2f(0f, -3000f), 90f);
         NetworkInfoManager.localShip.setShipAI(PluginManager.LOCAL_CONTROL_SHIP_AI_PLUGIN);
         NetworkInfoManager.localShip.setAlly(true);
-
-
 
         LocalShipState.curGroupIndex = 0;
         List<WeaponGroupAPI> weaponGroupsCopy = NetworkInfoManager.localShip.getWeaponGroupsCopy();
@@ -82,7 +87,7 @@ public class InitializePlugin extends BaseEveryFrameCombatPlugin {
         }
     }
 
-    private void initializePlugins(CombatEngineAPI engine) {
+    private void initPlugins(CombatEngineAPI engine) {
         engine.addPlugin(PluginManager.AUTOFIRE_DEFER_PROCESS_PLUGIN);
         engine.addPlugin(PluginManager.KEEP_PAUSE_PLUGIN);
         engine.addPlugin(PluginManager.INTERRUPT_COMBAT_PLUGIN);

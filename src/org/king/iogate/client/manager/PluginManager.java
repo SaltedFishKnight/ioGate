@@ -15,7 +15,7 @@ public class PluginManager {
 
     public static final RemoteControlShipAIPlugin REMOTE_CONTROL_SHIP_AI_PLUGIN = new RemoteControlShipAIPlugin();
 
-    public static final InitializePlugin INITIALIZE_PLUGIN = new InitializePlugin();
+    public static final InitPlugin INIT_PLUGIN = new InitPlugin();
 
     public static final KeepPausePlugin KEEP_PAUSE_PLUGIN = new KeepPausePlugin();
 

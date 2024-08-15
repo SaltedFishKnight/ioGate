@@ -27,7 +27,7 @@ public class MissionDefinition implements MissionDefinitionPlugin {
         // 失去指定名字的飞船会导致该方立即失败
         //api.defeatOnShipLoss("Main");
 
-        api.addPlugin(PluginManager.INITIALIZE_PLUGIN);
+        api.addPlugin(PluginManager.INIT_PLUGIN);
 
     }
 }
