@@ -4,7 +4,6 @@ import com.fs.starfarer.api.input.InputEventMouseButton;
 import org.king.iogate.client.state.InputState;
 import org.lwjgl.input.Keyboard;
 
-// TODO 若使用武器组的另一种实现，则用enum的枚举值代替class的静态常量
 public class InputStateManager {
 
     public static final InputState LEFT_MOUSE_BUTTON = new InputState(InputEventMouseButton.LEFT);

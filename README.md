@@ -1,7 +1,7 @@
 # ioGate 客户端
 1. 这是一个实验性 mod，使用 ioGate 之前，请创建一个原版游戏的副本，以下所有操作请在副本上进行
 2. 加入 [Discord](https://discord.gg/NC7J5DUURy)，下载并安装对应版本的 unlock.jar
-    * unlock.jar 提供者：tomatopaste
+    * unlock.jar 提供者：[tomatopaste](https://fractalsoftworks.com/forum/index.php?action=profile;u=10783)
     * [相关帖子](https://fractalsoftworks.com/forum/index.php?topic=24577.0)
 3. 按照这篇[帖子](https://fractalsoftworks.com/forum/index.php?topic=29320.0)为游戏安装 JDK 23
 4. 修改原始的 Miko_R3.txt，将 “--enable-preview” 之后的配置，覆盖为以下配置
@@ -49,7 +49,7 @@
 # ioGate Client
 1. This is an experimental mod, before using ioGate, please create a copy of the original game, and all the following operations should be performed on the copy
 2. Join [Discord](https://discord.gg/NC7J5DUURy) to download and install the corresponding version of unlock.jar
-    * The provider of unlock.jar: tomatopaste
+    * The provider of unlock.jar: [tomatopaste](https://fractalsoftworks.com/forum/index.php?action=profile;u=10783)
     * [Related post](https://fractalsoftworks.com/forum/index.php?topic=24577.0)
 3. Follow this [post](https://fractalsoftworks.com/forum/index.php?topic=29320.0) to install JDK 23 for the game
 4. Modify the original Miko_R3.txt to override the configuration after "--enable-preview" with the following configuration
