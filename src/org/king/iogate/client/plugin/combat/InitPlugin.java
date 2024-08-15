@@ -50,9 +50,13 @@ public class InitPlugin extends BaseEveryFrameCombatPlugin {
         // 自定义结束对局的实现
         engine.setDoNotEndCombat(true);
 
-        // 不允许进入开发模式
         SettingsAPI settings = Global.getSettings();
+        // 不允许进入开发模式
         settings.setDevMode(false);
+        // 关闭自动跟随鼠标
+        settings.setAutoTurnMode(false);
+        log.info("关闭自动转向模式");
+        log.info("Set auto turn mode to false");
 
         FrameManager.newCombat();
     }
