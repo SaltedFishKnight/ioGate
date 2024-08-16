@@ -18,11 +18,11 @@ public class EndCombatPlugin extends BaseEveryFrameCombatPlugin {
     public void advance(float amount, List<InputEventAPI> events) {
         super.advance(amount, events);
 
-        // 确定检查哪个飞船的状态以及结束哪个舰队的战斗
+        // 如果任意一方 Flagship 死亡，则选出胜者
         FleetSide winner = !NetworkInfoManager.localShip.isAlive() ? FleetSide.ENEMY :
                 !NetworkInfoManager.remoteShip.isAlive() ? FleetSide.PLAYER : null;
 
-        // 如果飞船不存活且比赛状态为匹配，则结束战斗
+        // 如果选出了胜者且比赛状态为匹配，则结束战斗
         if (winner != null && NetworkState.matchState == MatchType.MATCHED) {
             CombatEngineAPI combatEngine = Global.getCombatEngine();
             combatEngine.endCombat(0f, winner);
