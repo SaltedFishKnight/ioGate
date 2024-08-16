@@ -29,7 +29,7 @@ public class InitPlugin extends BaseEveryFrameCombatPlugin {
     public void init(CombatEngineAPI engine) {
         super.init(engine);
 
-        initSystem(engine);
+        initSetting(engine);
 
         initRemoteShip();
 
@@ -40,7 +40,7 @@ public class InitPlugin extends BaseEveryFrameCombatPlugin {
         RoomActionSet.ready();
     }
 
-    private void initSystem(CombatEngineAPI engine) {
+    private void initSetting(CombatEngineAPI engine) {
         if (NetworkState.matchState != MatchType.MATCHED) {
             log.info("用户未成功匹配，需要匹配成功才能开始战斗");
             log.info("User is not successfully matched and need to be matched with an opponent to start the combat");
@@ -73,7 +73,7 @@ public class InitPlugin extends BaseEveryFrameCombatPlugin {
         }
 
         RemoteShipState.curGroupIndex = 0;
-        if (weaponGroupsCopy.get(0).isAutofiring()) {
+        if (weaponGroupsCopy.getFirst().isAutofiring()) {
             NetworkInfoManager.remoteShip.giveCommand(ShipCommand.TOGGLE_AUTOFIRE, null, 0);
             RemoteShipState.localAutofireDisplay.set(0, false);
         }
