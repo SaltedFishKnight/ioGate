@@ -2,21 +2,17 @@ package org.king.iogate.client.listener;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ViewportAPI;
-import org.king.iogate.client.manager.FrameManager;
 import org.king.iogate.client.manager.InputStateManager;
 import org.king.iogate.client.manager.NetworkInfoManager;
 import org.king.iogate.client.manager.PluginManager;
 import org.king.iogate.client.state.InputState;
 import org.king.iogate.client.state.LocalShipState;
 import org.king.iogate.client.state.type.InputType;
-import org.king.iogate.common.protobuf.room.CommandType;
-import org.king.iogate.common.protobuf.room.MouseLocation;
-import org.king.iogate.common.protobuf.room.ShipAction;
-import org.king.iogate.common.protobuf.room.WeaponGroupState;
+import org.king.iogate.common.protobuf.room.*;
+import org.king.iogate.common.protobuf.room.DefenseSystem;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class LocalShipActionListener {
@@ -35,10 +31,34 @@ public class LocalShipActionListener {
 
     public static ShipAction buildShipAction() {
 
+        processLocally();
+
         ShipAction shipAction = new ShipAction();
 
+        buildMouseLocation(shipAction);
 
+        buildDefenseSystem(shipAction);
 
+        buildMovement(shipAction);
+
+        buildWeaaponGroup(shipAction);
+
+        return shipAction;
+    }
+
+    private static void processLocally() {
+        if (InputStateManager.KEY_U.type == InputType.DOWN) {
+            NetworkInfoManager.localShip.setShipAI(PluginManager.LOCAL_CONTROL_SHIP_AI_PLUGIN);
+        }
+
+        if (InputStateManager.KEY_SPACE.type == InputType.DOWN
+                || InputStateManager.KEY_TAB.type == InputType.DOWN
+                || InputStateManager.KEY_ESCAPE.type == InputType.DOWN) {
+            Global.getCombatEngine().setPaused(false);
+        }
+    }
+
+    private static void buildMouseLocation(ShipAction shipAction) {
         MouseLocation mouseLocation = new MouseLocation();
         ViewportAPI viewport = Global.getCombatEngine().getViewport();
         float mouseTargetX = viewport.convertScreenXToWorldX(Mouse.getX());
@@ -46,87 +66,75 @@ public class LocalShipActionListener {
         mouseLocation.x = -mouseTargetX;
         mouseLocation.y = -mouseTargetY;
         shipAction.mouseLocation = mouseLocation;
+    }
 
-
-
-        LinkedList<String> commandList = new LinkedList<>();
+    private static void buildDefenseSystem(ShipAction shipAction) {
+        DefenseSystem defenseSystem = new DefenseSystem();
         if (InputStateManager.KEY_R.type == InputType.DOWN) {
-            commandList.add(CommandType.TARGET_SHIP_OR_CLEAR_TARGET.name());
+            defenseSystem.isTargetedShipOrClearedTarget = true;
         }
-
         if (InputStateManager.LEFT_MOUSE_BUTTON.type == InputType.DOWN || InputStateManager.LEFT_MOUSE_BUTTON.type == InputType.REPEAT) {
-            commandList.add(CommandType.FIRE.name());
+            defenseSystem.isFired = true;
         }
-
         if (InputStateManager.KEY_X.type == InputType.DOWN) {
-            commandList.add(CommandType.HOLD_FIRE.name());
+            defenseSystem.isHoldenFire = true;
         }
-
         if (InputStateManager.RIGHT_MOUSE_BUTTON.type == InputType.DOWN) {
-            commandList.add(CommandType.TOGGLE_SHIELD_OR_PHASE_CLOAK.name());
+            defenseSystem.isToggledShieldOrPhaseCloak = true;
         }
-
         if (InputStateManager.KEY_F.type == InputType.DOWN) {
-            commandList.add(CommandType.USE_SYSTEM.name());
+            defenseSystem.isUsedSystem = true;
         }
-
         if (InputStateManager.KEY_V.type == InputType.DOWN) {
-            commandList.add(CommandType.VENT_FLUX.name());
+            defenseSystem.isVentedFlux = true;
         }
-
         if (InputStateManager.KEY_Z.type == InputType.DOWN && InputStateManager.KEY_Y.type == InputType.DOWN) {
-            commandList.add(CommandType.PULL_BACK_FIGHTERS.name());
+            defenseSystem.isPulledBackFighters = true;
         }
+        shipAction.defenseSystem = defenseSystem;
+    }
 
-
-
+    private static void buildMovement(ShipAction shipAction) {
+        Movement movement = new Movement();
+        shipAction.shipFacing = (NetworkInfoManager.localShip.getFacing() + 180f) % 360f;
         if (InputStateManager.KEY_W.type == InputType.DOWN || InputStateManager.KEY_W.type == InputType.REPEAT) {
-            commandList.add(CommandType.ACCELERATE.name());
+            movement.isAccelerated = true;
         }
-
         if (InputStateManager.KEY_S.type == InputType.DOWN || InputStateManager.KEY_S.type == InputType.REPEAT) {
-            commandList.add(CommandType.ACCELERATE_BACKWARDS.name());
+            movement.isAcceleratedBackwards = true;
         }
-
         if (InputStateManager.KEY_C.type == InputType.DOWN || InputStateManager.KEY_C.type == InputType.REPEAT) {
-            commandList.add(CommandType.DECELERATE.name());
+            movement.isDecelerated = true;
         }
-
         if (InputStateManager.KET_LSHIFT.type == InputType.DOWN || InputStateManager.KET_LSHIFT.type == InputType.REPEAT) {
-
             shipAction.isShiftPressed = true;
-
             if (InputStateManager.KEY_Q.type == InputType.DOWN || InputStateManager.KEY_Q.type == InputType.REPEAT
                     || InputStateManager.KEY_A.type == InputType.DOWN || InputStateManager.KEY_A.type == InputType.REPEAT) {
-                commandList.add(CommandType.STRAFE_LEFT.name());
+                movement.isStrafedLeft = true;
             }
-
             if (InputStateManager.KEY_E.type == InputType.DOWN || InputStateManager.KEY_E.type == InputType.REPEAT
                     || InputStateManager.KEY_D.type == InputType.DOWN || InputStateManager.KEY_D.type == InputType.REPEAT) {
-                commandList.add(CommandType.STRAFE_RIGHT.name());
+                movement.isStrafedRight = true;
             }
         } else {
             if (InputStateManager.KEY_A.type == InputType.DOWN || InputStateManager.KEY_A.type == InputType.REPEAT) {
-                commandList.add(CommandType.TURN_LEFT.name());
+                movement.isTurnedLeft = true;
             }
-
             if (InputStateManager.KEY_D.type == InputType.DOWN || InputStateManager.KEY_D.type == InputType.REPEAT) {
-                commandList.add(CommandType.TURN_RIGHT.name());
+                movement.isTurnedRight = true;
             }
-
             if (InputStateManager.KEY_Q.type == InputType.DOWN || InputStateManager.KEY_Q.type == InputType.REPEAT) {
-                commandList.add(CommandType.STRAFE_LEFT.name());
+                movement.isStrafedLeft = true;
             }
-
             if (InputStateManager.KEY_E.type == InputType.DOWN || InputStateManager.KEY_E.type == InputType.REPEAT) {
-                commandList.add(CommandType.STRAFE_RIGHT.name());
+                movement.isStrafedRight = true;
             }
         }
-        shipAction.commandList = commandList;
+        shipAction.movement = movement;
+    }
 
-
-
-        WeaponGroupState weaponGroupState = new WeaponGroupState();
+    private static void buildWeaaponGroup(ShipAction shipAction) {
+        WeaponGroup weaponGroup = new WeaponGroup();
         for (int i = 0; i < 7; i++) {
             InputState numberState = NUMBER_STATE_LIST.get(i);
             if ((InputStateManager.KEY_LCONTROL.type == InputType.DOWN || InputStateManager.KEY_LCONTROL.type == InputType.REPEAT)
@@ -137,32 +145,8 @@ public class LocalShipActionListener {
                 LocalShipState.curGroupIndex = i;
             }
         }
-        weaponGroupState.curGroupIndex = LocalShipState.curGroupIndex;
-        weaponGroupState.autofireState = LocalShipState.autofireState;
-        shipAction.weaponGroupState = weaponGroupState;
-
-
-
-        if (InputStateManager.KEY_U.type == InputType.DOWN) {
-            NetworkInfoManager.localShip.setShipAI(PluginManager.LOCAL_CONTROL_SHIP_AI_PLUGIN);
-        }
-
-        if (InputStateManager.KEY_SPACE.type == InputType.DOWN
-                || InputStateManager.KEY_TAB.type == InputType.DOWN
-                || InputStateManager.KEY_ESCAPE.type == InputType.DOWN) {
-            Global.getCombatEngine().setPaused(false);
-        }
-
-
-
-        shipAction.shipFacing = (NetworkInfoManager.localShip.getFacing() + 180f) % 360f;
-
-
-
-        shipAction.frameIndex = FrameManager.FRAME_COUNTER.get();
-
-
-
-        return shipAction;
+        weaponGroup.curGroupIndex = LocalShipState.curGroupIndex;
+        weaponGroup.autofireState = LocalShipState.autofireState;
+        shipAction.weaponGroup = weaponGroup;
     }
 }

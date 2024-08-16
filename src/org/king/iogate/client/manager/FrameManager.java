@@ -2,9 +2,7 @@ package org.king.iogate.client.manager;
 
 import org.jctools.queues.SpscLinkedQueue;
 import org.king.iogate.client.state.RemoteShipState;
-import org.king.iogate.common.protobuf.room.MouseLocation;
-import org.king.iogate.common.protobuf.room.ShipAction;
-import org.king.iogate.common.protobuf.room.WeaponGroupState;
+import org.king.iogate.common.protobuf.room.*;
 
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,22 +22,26 @@ public class FrameManager {
     }
 
     private static ShipAction initFrameZero() {
+
         ShipAction frameZero = new ShipAction();
-        frameZero.commandList = new LinkedList<>();
 
         MouseLocation mouseLocation = new MouseLocation();
         mouseLocation.x = 0f;
         mouseLocation.y = 0f;
         frameZero.mouseLocation = mouseLocation;
 
-        WeaponGroupState weaponGroupState = new WeaponGroupState();
-        weaponGroupState.curGroupIndex = 0;
-        weaponGroupState.autofireState = new LinkedList<>(RemoteShipState.remoteAutofireDisplay);
-        frameZero.weaponGroupState = weaponGroupState;
+        WeaponGroup weaponGroup = new WeaponGroup();
+        weaponGroup.curGroupIndex = 0;
+        weaponGroup.autofireState = new LinkedList<>(RemoteShipState.remoteAutofireDisplay);
+        frameZero.weaponGroup = weaponGroup;
+
+        // All boolean fields are false
+        frameZero.movement = new Movement();
+        frameZero.defenseSystem = new DefenseSystem();
 
         frameZero.shipFacing = 90f;
-        frameZero.frameIndex = 0;
         frameZero.isShiftPressed = false;
+
         return frameZero;
     }
 

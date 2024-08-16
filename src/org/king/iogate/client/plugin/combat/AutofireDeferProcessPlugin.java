@@ -22,6 +22,7 @@ public class AutofireDeferProcessPlugin extends BaseEveryFrameCombatPlugin {
             if (iLocalDisplay != iRemoteDisplay) {
                 NetworkInfoManager.remoteShip.giveCommand(ShipCommand.TOGGLE_AUTOFIRE, null, i);
                 RemoteShipState.localAutofireDisplay.set(i, iRemoteDisplay);
+                // 一帧之内只能处理一次切换自动开火命令
                 break;
             }
         }
