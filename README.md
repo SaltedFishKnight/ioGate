@@ -32,7 +32,6 @@
     > -Dcom.fs.starfarer.settings.paths.logs=.  
     > -Dfile.encoding=GBK  
     > -Dorg.slf4j.simpleLogger.logFile=System.out  
-    > -Dorg.slf4j.simpleLogger.defaultLogLevel=info  
     > -Dorg.slf4j.simpleLogger.showDateTime=true  
     > -Dorg.slf4j.simpleLogger.dateTimeFormat=[yyyy-MM-dd|HH:mm:ss.SSS]  
     > -Dorg.slf4j.simpleLogger.levelInBrackets=true  
@@ -80,7 +79,6 @@
     > -Dcom.fs.starfarer.settings.paths.logs=.  
     > -Dfile.encoding=GBK  
     > -Dorg.slf4j.simpleLogger.logFile=System.out  
-    > -Dorg.slf4j.simpleLogger.defaultLogLevel=info  
     > -Dorg.slf4j.simpleLogger.showDateTime=true  
     > -Dorg.slf4j.simpleLogger.dateTimeFormat=[yyyy-MM-dd|HH:mm:ss.SSS]  
     > -Dorg.slf4j.simpleLogger.levelInBrackets=true  
