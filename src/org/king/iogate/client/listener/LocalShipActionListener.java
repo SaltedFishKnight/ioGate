@@ -31,9 +31,9 @@ public class LocalShipActionListener {
 
     public static ShipAction buildShipAction() {
 
-        processLocally();
-
         ShipAction shipAction = new ShipAction();
+
+        processCommandExecution(shipAction);
 
         buildMouseLocation(shipAction);
 
@@ -46,14 +46,20 @@ public class LocalShipActionListener {
         return shipAction;
     }
 
-    private static void processLocally() {
+    private static void processCommandExecution(ShipAction shipAction) {
+        // 不允许 AI 接管 Flagship
         if (InputStateManager.KEY_U.type == InputType.DOWN) {
             NetworkInfoManager.localShip.setShipAI(PluginManager.LOCAL_CONTROL_SHIP_AI_PLUGIN);
         }
 
-        if (InputStateManager.KEY_SPACE.type == InputType.DOWN
-                || InputStateManager.KEY_TAB.type == InputType.DOWN
-                || InputStateManager.KEY_ESCAPE.type == InputType.DOWN) {
+        // SPACE 和 ESC 不会影响本地飞船执行命令
+        if (InputStateManager.KEY_SPACE.type == InputType.DOWN || InputStateManager.KEY_ESCAPE.type == InputType.DOWN) {
+            Global.getCombatEngine().setPaused(false);
+        }
+
+        // 使用 Tab 唤出指挥面板，在指挥面板时，本地飞船无法执行任何命令
+        if (InputStateManager.KEY_TAB.type == InputType.DOWN) {
+            shipAction.isOpenedCommandPanel = !LocalShipState.isOpenedCommandPanel;
             Global.getCombatEngine().setPaused(false);
         }
     }

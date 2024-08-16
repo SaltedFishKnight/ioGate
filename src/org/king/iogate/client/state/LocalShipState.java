@@ -9,6 +9,8 @@ public class LocalShipState {
 
     public static List<Boolean> autofireState = new ArrayList<>(7);
 
+    public static boolean isOpenedCommandPanel = false;
+
     static {
         for (int i = 0; i < 7; i++) {
             LocalShipState.autofireState.add(false);

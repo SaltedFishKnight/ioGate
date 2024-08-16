@@ -34,15 +34,18 @@ public class RemoteControlShipAIPlugin extends AbstractShipAIPlugin {
 
         // 远程飞船行动逻辑
         ShipAction shipAction = FrameManager.FRAME_BUFFER.poll();
-        if(shipAction == null) {
-            repeatLastFrameShipAction(FrameManager.lastFrameShipAction);
-        } else {
+        if(shipAction != null) {
             consumeLatestShipAction(shipAction);
-            FrameManager.lastFrameShipAction = shipAction;
+        } else {
+            repeatLastFrameShipAction(FrameManager.lastFrameShipAction);
         }
     }
 
     private void repeatLastFrameShipAction(ShipAction shipAction) {
+
+        if (shipAction.isOpenedCommandPanel) {
+            return;
+        }
 
         Vector2f mouseTarget = NetworkInfoManager.remoteShip.getMouseTarget();
 
@@ -58,6 +61,12 @@ public class RemoteControlShipAIPlugin extends AbstractShipAIPlugin {
     }
 
     private void consumeLatestShipAction(ShipAction shipAction) {
+
+        if (shipAction.isOpenedCommandPanel) {
+            return;
+        }
+
+        FrameManager.lastFrameShipAction = shipAction;
 
         processDefenseSystem(shipAction.mouseLocation, shipAction.defenseSystem, shipAction.shipFacing);
 
