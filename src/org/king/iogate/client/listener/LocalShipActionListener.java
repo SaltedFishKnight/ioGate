@@ -59,9 +59,10 @@ public class LocalShipActionListener {
 
         // 使用 Tab 唤出指挥面板，在指挥面板时，本地飞船无法执行任何命令
         if (InputStateManager.KEY_TAB.type == InputType.DOWN) {
-            shipAction.isOpenedCommandPanel = !LocalShipState.isOpenedCommandPanel;
+            LocalShipState.isOpenedCommandPanel = !LocalShipState.isOpenedCommandPanel;
             Global.getCombatEngine().setPaused(false);
         }
+        shipAction.isOpenedCommandPanel = LocalShipState.isOpenedCommandPanel;
     }
 
     private static void buildMouseLocation(ShipAction shipAction) {
