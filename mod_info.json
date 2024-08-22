@@ -10,7 +10,7 @@
   	    "jars/ioGate.jar",
     ],
   	"modPlugin":"org.king.iogate.IoGateModPlugin",
-	  	"dependencies": [
+    "dependencies": [
         {
             "id": "lw_lazylib",
             "name": "LazyLib",
