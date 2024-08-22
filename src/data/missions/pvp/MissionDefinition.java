@@ -1,4 +1,4 @@
-package data.missions.PVP;
+package data.missions.pvp;
 
 import com.fs.starfarer.api.fleet.FleetGoal;
 import com.fs.starfarer.api.mission.FleetSide;
