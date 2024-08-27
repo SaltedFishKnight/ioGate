@@ -18,6 +18,8 @@ import org.king.iogate.common.protobuf.room.ActionWithId;
 import org.king.iogate.common.protobuf.room.ShipAction;
 import org.king.iogate.common.route.RoomCmd;
 
+import java.time.Instant;
+
 @Slf4j
 public final class RoomActionSet {
 
@@ -39,9 +41,17 @@ public final class RoomActionSet {
                 .setTitle("所有玩家已准备")
                 .setCallback(result -> {
                     CombatEngineAPI combatEngine = Global.getCombatEngine();
-
                     combatEngine.removePlugin(PluginManager.KEEP_PAUSE_PLUGIN);
                     combatEngine.addPlugin(PluginManager.PROHIBIT_PAUSE_PLUGIN);
+
+                    long startTimeNano = result.getLong();
+                    while (true) {
+                        Instant now = Instant.now();
+                        long nowNano = now.getEpochSecond() * 1_000_000_000L + now.getNano();
+                        if (nowNano >= startTimeNano) {
+                            break;
+                        }
+                    }
 
                     NetworkInfoManager.localShip.setShipAI(PluginManager.LOCAL_CONTROL_SHIP_AI_PLUGIN);
                     NetworkInfoManager.remoteShip.setShipAI(PluginManager.REMOTE_CONTROL_SHIP_AI_PLUGIN);
@@ -133,7 +143,10 @@ public final class RoomActionSet {
         int pushShipActionCmd = CmdKit.merge(RoomCmd.cmd, RoomCmd.pushShipAction);
         ListenCommand.of(pushShipActionCmd)
                 .setTitle("接收一帧之内，飞船的所有行为")
-                .setCallback(result -> FrameManager.FRAME_BUFFER.offer(result.getValue(ShipAction.class)))
+                .setCallback(result -> {
+                    ShipAction shipAction = result.getValue(ShipAction.class);
+                    FrameManager.frameArray[shipAction.frameIndex] = shipAction;
+                })
                 .listen();
     }
 }
