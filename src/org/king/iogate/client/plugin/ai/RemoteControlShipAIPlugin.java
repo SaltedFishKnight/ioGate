@@ -33,7 +33,7 @@ public class RemoteControlShipAIPlugin extends AbstractShipAIPlugin {
         RoomActionSet.uploadShipAction(actionWithId);
 
         // 远程飞船行动逻辑
-        ShipAction shipAction = FrameManager.FRAME_BUFFER.poll();
+        ShipAction shipAction = FrameManager.frameArray[FrameManager.FRAME_COUNTER.getAndIncrement()];
         if(shipAction != null) {
             consumeLatestShipAction(shipAction);
         } else {

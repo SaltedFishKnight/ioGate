@@ -2,6 +2,7 @@ package org.king.iogate.client.listener;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ViewportAPI;
+import org.king.iogate.client.manager.FrameManager;
 import org.king.iogate.client.manager.InputStateManager;
 import org.king.iogate.client.manager.NetworkInfoManager;
 import org.king.iogate.client.manager.PluginManager;
@@ -9,7 +10,6 @@ import org.king.iogate.client.state.InputState;
 import org.king.iogate.client.state.LocalShipState;
 import org.king.iogate.client.state.type.InputType;
 import org.king.iogate.common.protobuf.room.*;
-import org.king.iogate.common.protobuf.room.DefenseSystem;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
@@ -63,6 +63,9 @@ public class LocalShipActionListener {
             Global.getCombatEngine().setPaused(false);
         }
         shipAction.isOpenedCommandPanel = LocalShipState.isOpenedCommandPanel;
+
+        // 本地第 n 帧作为远程的第 n + 1 帧
+        shipAction.frameIndex = FrameManager.FRAME_COUNTER.get() + 1;
     }
 
     private static void buildMouseLocation(ShipAction shipAction) {

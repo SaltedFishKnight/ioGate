@@ -1,6 +1,5 @@
 package org.king.iogate.client.manager;
 
-import org.jctools.queues.SpscLinkedQueue;
 import org.king.iogate.client.state.RemoteShipState;
 import org.king.iogate.common.protobuf.room.*;
 
@@ -11,14 +10,17 @@ public class FrameManager {
 
     public static final AtomicInteger FRAME_COUNTER = new AtomicInteger(0);
 
-    public static final SpscLinkedQueue<ShipAction> FRAME_BUFFER = new SpscLinkedQueue<>();
+    public static ShipAction[] frameArray;
 
     public static ShipAction lastFrameShipAction;
 
     public static void newCombat() {
         FRAME_COUNTER.set(0);
-        FRAME_BUFFER.clear();
-        lastFrameShipAction = initFrameZero();
+        // 60 帧情况下，数组可以缓存 1 小时之内的 ShipAction
+        frameArray = new ShipAction[216000];
+        frameArray[0] = initFrameZero();
+//        ShipAction frameZero = initFrameZero();
+//        Arrays.fill(frameArray, 0, 1, frameZero);
     }
 
     private static ShipAction initFrameZero() {
@@ -39,8 +41,10 @@ public class FrameManager {
         frameZero.movement = new Movement();
         frameZero.defenseSystem = new DefenseSystem();
 
-        frameZero.shipFacing = 90f;
+        frameZero.shipFacing = 270f;
         frameZero.isShiftPressed = false;
+        frameZero.isOpenedCommandPanel = false;
+        frameZero.frameIndex = 0;
 
         return frameZero;
     }
