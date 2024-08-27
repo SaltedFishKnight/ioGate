@@ -70,10 +70,10 @@ public final class LobbyActionSet {
         RequestCommand.of(autoMatchCmd)
                 .setTitle("上传本地用户的匹配信息，进行自动匹配")
                 .setRequestData(() -> {
-                    // 当输入框没有任何字符时，提取的字符串不会为 null，而是 ""
+                    // 当输入框没有任何字符时，提取的字符串不会为 null，而是 " "
                     String variantId = LunaSettings.getString("ioGate", "variantId");
                     String supplementToVariantId = LunaSettings.getString("ioGate", "supplementToVariantId");
-                    NetworkInfoManager.localVariantId = variantId.concat(supplementToVariantId);
+                    NetworkInfoManager.localVariantId = variantId.concat(supplementToVariantId).strip();
                     return WrapperKit.of(NetworkInfoManager.localVariantId);
                 })
                 .setCallback(result -> {
